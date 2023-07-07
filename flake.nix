@@ -1,5 +1,5 @@
 {
-  description = "Quick Python starter environment";
+  description = "Python development environment";
 
   # Flake inputs
   inputs = {
@@ -19,6 +19,13 @@
       forAllSystems = f: nixpkgs.lib.genAttrs allSystems (system: f {
         pkgs = import nixpkgs { inherit system; };
       });
+
+      templates = {
+        default = {
+          url = "github:shorshor/starter";
+          description = "A getting started template for a new Nix project";
+        };
+      };
     in
     {
       devShells = forAllSystems ({ pkgs }: {
@@ -47,11 +54,11 @@
               # Activate the virtual environment
               echo "Activating virtual environment..."
               source .venv/bin/activate
-
-            
-
             '';
           };
       });
+
+      # Export the templates
+      outputs.templates = { inherit templates; };
     };
 }
